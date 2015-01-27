@@ -25,9 +25,13 @@ namespace Blacklite.UI.Metadatums
             Max = max;
         }
 
-        public Length(MaxLengthAttribute maxAttribute) : this(0, maxAttribute.Length) { }
+        public Length(LengthAttribute lengthAttribute) : this(lengthAttribute.Min, lengthAttribute.Max) { }
+
+        public Length(MaxLengthAttribute maxAttribute) : this(0, maxAttribute?.Length) { }
 
         public Length(MinLengthAttribute minAttribute) : this(minAttribute.Length) { }
+
+        public Length(MinLengthAttribute minAttribute, MaxLengthAttribute maxAttribute) : this(minAttribute.Length, maxAttribute?.Length) { }
 
         public int Min { get; }
         public int? Max { get; }

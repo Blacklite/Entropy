@@ -1,20 +1,10 @@
 ﻿using Blacklite.Framework.Metadata.Metadatums;
+using Blacklite.Framework.Metadata.Properties;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Blacklite.UI.Metadatums
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class ReadOnlyAttribute : Attribute
-    {
-        public ReadOnlyAttribute(bool readOnly)
-        {
-            ReadOnly = readOnly;
-        }
-
-        public bool ReadOnly { get; }
-    }
-
     public class ReadOnly : IMetadatum
     {
         public ReadOnly(bool readOnly)

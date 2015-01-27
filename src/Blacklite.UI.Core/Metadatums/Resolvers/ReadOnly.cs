@@ -1,31 +1,35 @@
-﻿//using Blacklite.Framework.Metadata.Metadatums;
-//using System;
-//using System.ComponentModel.DataAnnotations;
+﻿using Blacklite.Framework.Metadata;
+using Blacklite.Framework.Metadata.Metadatums;
+using Blacklite.Framework.Metadata.Metadatums.Resolvers;
+using Microsoft.Framework.DependencyInjection;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Blacklite.UI.Metadatums;
+using Blacklite.Framework.Metadata.Properties;
 
-//namespace Blacklite.UI.Metadatums
-//{
-//    [AttributeUsage(AttributeTargets.Property)]
-//    public sealed class ReadOnlyAttribute : Attribute
-//    {
-//        public ReadOnlyAttribute(bool readOnly)
-//        {
-//            ReadOnly = readOnly;
-//        }
+namespace Blacklite.UI.Metadatums.Resolvers
+{
+    [ServiceDescriptor(typeof(IApplicationPropertyMetadatumResolver))]
+    class ReadOnlyPropertyMetadatumResolver : SimplePropertyMetadatumResolver<ReadOnly>
+    {
+        public override ReadOnly Resolve(IMetadatumResolutionContext<IPropertyMetadata> context)
+        {
+            var editableAttribute = context.Metadata.PropertyInfo
+                .CustomAttributes.OfType<EditableAttribute>()
+                .SingleOrDefault();
 
-//        public bool ReadOnly { get; }
-//    }
+            if (editableAttribute != null)
+                return new ReadOnly(!editableAttribute.AllowEdit);
 
-//    public class ReadOnly : IMetadatum
-//    {
-//        public ReadOnly(bool readOnly)
-//        {
-//            IsReadOnly = readOnly;
-//        }
+            var readOnlyAttribute = context.Metadata.PropertyInfo
+                .CustomAttributes.OfType<ReadOnlyAttribute>()
+                .SingleOrDefault();
 
-//        public ReadOnly(ReadOnlyAttribute attribute) : this(attribute.ReadOnly) { }
+            if (readOnlyAttribute != null)
+                return new ReadOnly(readOnlyAttribute.ReadOnly);
 
-//        public ReadOnly(EditableAttribute attribute) : this(!attribute.AllowEdit) { }
-
-//        public bool IsReadOnly { get; }
-//    }
-//}
+            return new ReadOnly(false);
+        }
+    }
+}

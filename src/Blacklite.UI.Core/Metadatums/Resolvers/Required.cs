@@ -1,18 +1,26 @@
-﻿//using Blacklite.Framework.Metadata.Metadatums;
-//using System;
-//using System.ComponentModel.DataAnnotations;
+﻿using Blacklite.Framework.Metadata;
+using Blacklite.Framework.Metadata.Metadatums;
+using Blacklite.Framework.Metadata.Metadatums.Resolvers;
+using Microsoft.Framework.DependencyInjection;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-//namespace Blacklite.UI.Metadatums
-//{
-//    public class Required : IMetadatum
-//    {
-//        public Required(bool required)
-//        {
-//            IsRequired = required;
-//        }
+namespace Blacklite.UI.Metadatums
+{
+    [ServiceDescriptor(typeof(IApplicationPropertyMetadatumResolver))]
+    class RequiredPropertyMetadatumResolver : SimplePropertyMetadatumResolver<Required>
+    {
+        public override Required Resolve(IMetadatumResolutionContext<IPropertyMetadata> context)
+        {
+            var requiredAttribute = context.Metadata.Attributes
+                .OfType<RequiredAttribute>()
+                .SingleOrDefault();
 
-//        public Required(RequiredAttribute attribute) : this(true) { }
+            if (requiredAttribute != null)
+                return new Required(true);
 
-//        public bool IsRequired { get; }
-//    }
-//}
+            return new Required(false);
+        }
+    }
+}

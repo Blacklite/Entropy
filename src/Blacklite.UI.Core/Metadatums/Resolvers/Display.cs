@@ -6,9 +6,11 @@ using Blacklite.Framework;
 using Blacklite.Framework.Metadata;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Framework.DependencyInjection;
 
 namespace Blacklite.UI.Metadatums.Resolvers
 {
+    [ServiceDescriptor(typeof(IApplicationTypeMetadatumResolver))]
     class DisplayTypeMetadatumResolver : SimpleTypeMetadatumResolver<Display>
     {
         public override Display Resolve(IMetadatumResolutionContext<ITypeMetadata> context)
@@ -38,37 +40,38 @@ namespace Blacklite.UI.Metadatums.Resolvers
         }
     }
 
+    [ServiceDescriptor(typeof(IApplicationPropertyMetadatumResolver))]
     class DisplayPropertyMetadatumResolver : SimplePropertyMetadatumResolver<Display>
     {
         private const int DisplayOrderDefault = 10000;
 
         public override Display Resolve(IMetadatumResolutionContext<IPropertyMetadata> context)
         {
-            var displayAttribute = context.Metadata.PropertyTypeInfo
-                .CustomAttributes.OfType<DisplayAttribute>()
+            var displayAttribute = context.Metadata.Attributes
+                .OfType<DisplayAttribute>()
                 .SingleOrDefault();
             if (displayAttribute != null)
             {
                 return new Display(displayAttribute);
             }
 
-            var displayName = context.Metadata.PropertyTypeInfo
-                .CustomAttributes.OfType<DisplayNameAttribute>()
+            var displayName = context.Metadata.Attributes
+                .OfType<DisplayNameAttribute>()
                 .SingleOrDefault()?.DisplayName ?? context.Metadata.PropertyType.Name.AsUserFriendly();
 
-            var shortName = context.Metadata.PropertyTypeInfo
-                .CustomAttributes.OfType<ShortNameAttribute>()
+            var shortName = context.Metadata.Attributes
+                .OfType<ShortNameAttribute>()
                 .SingleOrDefault()?.ShortName ?? displayName;
 
-            var description = context.Metadata.PropertyTypeInfo
-                .CustomAttributes.OfType<DescriptionAttribute>()
+            var description = context.Metadata.Attributes
+                .OfType<DescriptionAttribute>()
                 .SingleOrDefault()?.Description;
 
-            var displayOrder = context.Metadata.PropertyTypeInfo
-                .CustomAttributes.OfType<OrderAttribute>()
+            var displayOrder = context.Metadata.Attributes
+                .OfType<OrderAttribute>()
                 .SingleOrDefault()?.Order ?? GetRelativePosition(context.Metadata);
 
-            var groups = context.Metadata.PropertyTypeInfo.CustomAttributes
+            var groups = context.Metadata.Attributes
                 .OfType<GroupAttribute>()
                 .SelectMany(x => x.Groups)
                 .ToArray();

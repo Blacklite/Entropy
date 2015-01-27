@@ -1,19 +1,21 @@
 ﻿using Blacklite.Framework.Metadata;
 using Blacklite.Framework.Metadata.Metadatums;
 using Blacklite.Framework.Metadata.Metadatums.Resolvers;
+using Microsoft.Framework.DependencyInjection;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Blacklite.UI.Metadatums.Resolvers
 {
+    [ServiceDescriptor(typeof(IApplicationPropertyMetadatumResolver))]
     class CreditCardPropertyMetadatumResolver : SimplePropertyMetadatumResolver<CreditCard>
     {
         public override CreditCard Resolve(IMetadatumResolutionContext<IPropertyMetadata> context)
         {
-            var attribute = context.Metadata.PropertyTypeInfo
-                    .CustomAttributes.OfType<CreditCardAttribute>()
-                    .SingleOrDefault();
+            var attribute = context.Metadata.Attributes
+                .OfType<CreditCardAttribute>()
+                .SingleOrDefault();
 
             if (attribute != null)
             {
