@@ -14,6 +14,8 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
 using Blacklite.UI.Mvc.Models;
+using Blacklite.Framework.Multitenancy;
+using Blacklite.Framework.Multitenancy.Http;
 
 namespace Blacklite.UI.Mvc
 {
@@ -48,8 +50,10 @@ namespace Blacklite.UI.Mvc
             // services.AddWebApiConventions();
 
             services.AddHttpMultitenancy()
+                    .AddApplicationOnlySingleton<ITenantIdentificationStrategy, SingleTenantIdentificationStrategy>()
                     .AddMultitenancyFeatures()
-                    .AddMultitenancyMetadata();
+                    .AddMultitenancyMetadata()
+                    .AddAssembly(this);
 
             return new ContainerBuilder()
                 .Populate(services)
@@ -66,7 +70,7 @@ namespace Blacklite.UI.Mvc
             // Add the following to the request pipeline only in development environment.
             if (string.Equals(env.EnvironmentName, "Development", StringComparison.OrdinalIgnoreCase))
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseErrorPage(ErrorPageOptions.ShowAll);
                 app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
             }
@@ -79,6 +83,8 @@ namespace Blacklite.UI.Mvc
 
             // Add static files to the request pipeline.
             app.UseStaticFiles();
+
+            app.UseMultitenancy();
 
             // Add cookie-based authentication to the request pipeline.
             app.UseIdentity();

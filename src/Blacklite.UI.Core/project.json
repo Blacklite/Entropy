@@ -1,24 +1,26 @@
 ﻿{
-    "version": "1.0.0-*",
-    "dependencies": {
-        "Blacklite.Framework.DependencyInjection": "",
-        "Blacklite.Framework.Multitenancy.Features": "",
-        "Blacklite.Framework.Multitenancy.Metadata": "",
-        "Blacklite.Framework.Multitenancy.Autofac": ""
-    },
+	"version": "1.0.0-*",
+	"dependencies": {
+		"Blacklite.Framework.DependencyInjection": "",
+		"Blacklite.Framework.Multitenancy.Features": "",
+		"Blacklite.Framework.Multitenancy.Metadata": "",
+		"Blacklite.Framework.Multitenancy.Autofac": ""
+	},
 
-    "frameworks": {
-        "aspnet50": {
-            "frameworkAssemblies": {
-                "System.Runtime": "4.0.20.0"
-            },
-            "dependencies": {
-            }
-        },
-        "aspnetcore50": {
-            "dependencies": {
-                "System.Runtime": "4.0.20-beta-*"
-            }
-        }
-    }
+	"frameworks": {
+		"aspnet50": {
+			"frameworkAssemblies": {
+				"System.Runtime": "4.0.20.0",
+				"System.ComponentModel.DataAnnotations": "4.0.0.0"
+			},
+			"dependencies": {
+			}
+		},
+		"aspnetcore50": {
+			"dependencies": {
+				"System.Runtime": "4.0.20-beta-*",
+				"System.ComponentModel.Annotations": "4.0.10-beta-*"
+			}
+		}
+	}
 }
