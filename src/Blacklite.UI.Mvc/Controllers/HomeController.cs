@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blacklite.UI.Mvc.Controllers
 {
+    public class HomeModel
+    {
+        [Required]
+        public string Name { get; set; }
+    }
+
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            return View(new HomeModel()
+            {
+                Name = "My Name"
+            });
         }
 
         public IActionResult About()

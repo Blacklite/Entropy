@@ -16,6 +16,8 @@ using Microsoft.Framework.Logging.Console;
 using Blacklite.UI.Mvc.Models;
 using Blacklite.Framework.Multitenancy;
 using Blacklite.Framework.Multitenancy.Http;
+using Microsoft.Framework.OptionsModel;
+using Blacklite.UI.Mvc.TagHelpers;
 
 namespace Blacklite.UI.Mvc
 {
@@ -53,7 +55,14 @@ namespace Blacklite.UI.Mvc
                     .AddApplicationOnlySingleton<ITenantIdentificationStrategy, SingleTenantIdentificationStrategy>()
                     .AddMultitenancyFeatures()
                     .AddMultitenancyMetadata()
+                    .AddMetadataMvc()
+                    .AddScopedMetadata()
                     .AddAssembly(this);
+
+            services.AddTransient<IConfigureOptions<ControlTagHelperOptions>, ControlTagHelperOptionsSetup>()
+                    .AddTransient<IConfigureOptions<ControlTagHelperOptions>, BootstrapControlTagHelperOptionsSetup>()
+                    .AddTransient<IControlGenerator, ControlGenerator>();
+
 
             return new ContainerBuilder()
                 .Populate(services)

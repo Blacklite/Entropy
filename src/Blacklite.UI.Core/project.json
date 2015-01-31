@@ -3,7 +3,8 @@
 	"dependencies": {
 		"Blacklite.Framework.DependencyInjection": "",
 		"Blacklite.Framework.Multitenancy.Features": "",
-		"Blacklite.Framework.Multitenancy.Metadata": "",
+        "Blacklite.Framework.Multitenancy.Metadata": "",
+        "Blacklite.Framework.Metadata.Modeling": "",
 		"Blacklite.Framework.Multitenancy.Autofac": ""
 	},
 
