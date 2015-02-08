@@ -4,8 +4,8 @@
 @inject Blacklite.UI.Mvc.Features.MyRandom MyRandom
 @inject Blacklite.Framework.Multitenancy.ITenant Tenant
 
-@addtaghelper "Microsoft.AspNet.Mvc.TagHelpers"
-@addtaghelper "Blacklite.UI.Mvc"
+@addtaghelper "Microsoft.AspNet.Mvc.TagHelpers.InputTagHelper, Microsoft.AspNet.Mvc.TagHelpers"
+@addtaghelper "Blacklite.UI.Mvc.TagHelpers.ControlTagHelper, Blacklite.UI.Mvc"
 
 @{
     ViewBag.Title = "Home Page";
@@ -46,6 +46,11 @@
 
     <control for="Name"></control>
 
+    @{
+        var tenant = ViewContext.HttpContext.RequestServices.GetService<Blacklite.Framework.Multitenancy.ITenant>();
+
+        tenant.Configuration.Set("Tenant:Config", "ABC");
+    }
 
 
 
